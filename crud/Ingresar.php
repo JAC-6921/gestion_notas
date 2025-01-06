@@ -3,7 +3,7 @@ include("conexion.php");
 $con = conectar();
 
 $Nombre = $_POST['nombre'];
-$Gmail = $_POST['correo'];
+$nota_1 = $_POST['nota_1'];
 $Id_Evento = $_POST['evento_id']; // Se usará como evento inicial obligatorio
 $asistencia = $_POST['estado_asistencia'];
 

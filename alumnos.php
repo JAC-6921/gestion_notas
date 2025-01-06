@@ -1,13 +1,10 @@
 <?php
     session_start(); 
-    include("conexion.php");
+    include("crud/conexion.php");
     $con = conectar();
 
     // Consulta SQL para obtener los datos
-    $sql = "SELECT notas_alumnos  FROM alumnos
-           
-            $filtro_evento 
-            ORDER BY participantes.id, evento_participante.fecha_inscripcion";
+    $sql = "SELECT id_alumno, nombre, nota_1, nota_2, nota_3   FROM notas_alumnos";
     $query = mysqli_query($con, $sql);
 ?>
 
@@ -16,10 +13,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link rel="stylesheet" href="../css/alumnosstyle.css">
+    <title>Gestion de Notas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet"> 
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/alumnostyle.css">
     
-    <title>Gestion Notas</title>
+    <title>Gestion de Notas</title>
 </head>
 <body>
 
@@ -49,82 +48,59 @@
     <br><br>
 
     <!---Formularios--->
-<div class="container">
-    <form>
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-            <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputPassword1" class="form-label">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword1">
-        </div>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-            <label class="form-check-label" for="exampleCheck1">Check me out</label>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
-
-</div>
-    
-
-    <!-- Botón Insertar -->
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-md-9">
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#staticBackdrop"><i class="fa-solid fa-user-plus"></i> Agregar</button>
-                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h1 class="modal-title fs-5" id="staticBackdropLabel">Registro</h1>
-                            </div>
-                            <div class="modal-body">
-                                <form class="row g-3" action="../crud/Crud_Jorge/insertar.php" method="post">
-                                    <div class="col-md-6">
-                                        <label for="inputname" class="form-label">Nombre</label>
-                                        <input type="text" class="form-control" id="inputname" name="nombre" pattern="[A-Za-záéíóúÁÉÍÓÚñÑ]+" title="Solo se pueden letras" required>
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="inputemail" class="form-label">Gmail</label>
-                                        <input type="email" class="form-control" id="inputemail" name="correo" placeholder="example@gmail.com" required>
-                                    </div>
-                                    <div class="col-12">
-                                        <label for="evento_id" class="form-label">Seleccionar Evento</label>
-                                        <select class="form-select" id="evento_id" name="evento_id" required>
-                                            <option value="">Seleccione un evento</option>
-                                            <?php
-                                                $eventos = mysqli_query($con, "SELECT id, tipo_evento FROM gestion");
-                                                while ($evento = mysqli_fetch_assoc($eventos)) {
-                                                    echo "<option value='{$evento['id']}'>{$evento['tipo_evento']}</option>";
-                                                }
-                                            ?>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <label for="inputgen" class="form-label">Asistencia</label>
-                                        <select id="inputgen" class="form-select" name="estado_asistencia" required>
-                                            <option value="Pendiente">Pendiente</option>   
-                                            <option value="Presente">Presente</option>
-                                            <option value="Ausente">Ausente</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-                                        <button type="submit" class="btn btn-primary">Guardar</button>
-                                    </div>      
-                                </form>    
+    <div class="conteiner mt-5" style="justify-items: center; max-width: 400px;">
+            <div class="card ">
+                <div class="card-body " >
+                    <form action="procesar_registro.php" method="post"> 
+                        <div class="row">
+                            <div class="col-12" style="justify-content: center; color: white; background-color:blue ">
+                                <h1>Registro</h1>
                             </div>
                         </div>
-                    </div>
-                </div>  
-            </div>
+                        
+                        <div class="row mt-5">
+                            <div class="col">
+                                <label for="nombre">Nombre:</label>
+                                <input type="text" id="nombre" name="nombre" required>
+                            </div>
+                            <div class="col">
+                                <label for="nota_1">Nota 1:</label>
+                                <input type="text" id="nota_1" name="nota1" required>
+                            </div>
+                            <div class="col">
+                                <label for="nota_2">Nota 2:</label>
+                                <input type="text" id="nota_2" name="nota1" required>
+                            </div>
+                            
+                            <div class="col">
+                                <label for="nota_3">Nota_3:</label>
+                                <input type="text" id="nota_3" name="nota3" required>
+                            </div>
+                            
+                            
+                                
+                           
+                                
+                                <button type="submit" class="btn btn-primary">Registrar</button>
+                                
+                                
+                            </div>
+                           
+                        </div>
+                  
+                        
+                    </form>
+                </div>
+            </div>    
+        </div>
+           
+    </div>
+    </div>
+    
 
-          
 
-            <!-- Tabla -->
+<!-- Tabla -->
+ <div class="container-fluid"></div>
             <div class="col-md-12">
                 <table class="table table-dark table-bordered">
                     <thead>
@@ -247,64 +223,11 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
+   
 
-
-    <!-- Exportar -->
     
-         <a href="/Proyecto-Final/crud/Crud_Jorge/exportar.php?format=csv&evento_id==<?php echo isset($_GET['evento_id']) ? $_GET['evento_id'] : ''; ?>" class="btn btn-success">
-        Exportar CSV
-        </a>
-        <a href="/Proyecto-Final/crud/Crud_Jorge/exportar.php?format=pdf&evento_id=<?php echo isset($_GET['evento_id']) ? $_GET['evento_id'] : ''; ?>" class="btn btn-danger">
-            Exportar PDF
-        </a>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybfiPb82b0g3QBXfD0S72JpTx7rAZ2NEzB6F7M0L6f7V9gVJY" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-Q6v/5n32sp2XJ6QpEPOq8NhAyQbxGGG5TxvnmrZolGFZgXYlXis48o5u00F4VfYW" crossorigin="anonymous"></script>
 
-
-
-    <!-- footer -->
-    <footer class="py-5 px-4 mt-5 bg-dark">
-        <div class="container-fluid">        
-            <section id="Links" class="row mb-5">
-                <div class="col-12 col-md-4 mb-3">
-                    <h3 class="text-center">Conócenos</h3>
-                    <ul class="list-unstyled">
-                        <li><a href="historia.html" class="text-color-principal text-decoration-none">Nuestra Historia</a></li>
-                        <li><a href="contacto.html" class="text-color-principal text-decoration-none">Contáctanos</a></li>
-                        <li><a href="equipo.html" class="text-color-principal text-decoration-none">Nuestro Equipo</a></li>
-                    </ul>
-                </div>
-                <div class="col-12 col-md-4 mb-3">
-                    <h3 class="text-color-principal text-center">Nuestros eventos</h3>
-                    <ul class="list-unstyled">
-                        <li><a href="eventos-futuros.html" class="text-color-principal text-decoration-none">Próximos Eventos</a></li>
-                        <li><a href="torneos.html" class="text-color-principal text-decoration-none">Torneos</a></li>
-                        <li><a href="charlas.html" class="text-color-principal text-decoration-none">Charlas y Conferencias</a></li>
-                    </ul>
-                </div>
-                <div class="col-12 col-md-4 mb-3">
-                    <h3 class="text-color-principal text-center">Accesos Rápidos</h3>
-                    <ul class="list-unstyled">
-                        <li><a href="index.html" class="text-color-principal text-decoration-none">Inicio</a></li>
-                        <li><a href="faq.html" class="text-color-principal text-decoration-none">Preguntas Frecuentes</a></li>
-                        <li><a href="privacidad.html" class="text-color-principal text-decoration-none">Políticas de Privacidad</a></li>
-                        <li><a href="terminos.html" class="text-color-principal text-decoration-none">Términos y Condiciones</a></li>
-                    </ul>
-                </div>
-            </section>
-            <section class="Social text-center mb-4">
-                <a href="https://facebook.com" class="mx-2"><img src="../img/face.png" alt="Facebook" class="img-fluid img-social"></a>
-                <a href="https://whatsapp.com" class="mx-2"><img src="../img/wsp.png" alt="WhatsApp" class="img-fluid img-social"></a>
-                <a href="https://instagram.com" class="mx-2"><img src="../img/instagram.png" alt="Instagram" class="img-fluid img-social"></a>
-                <a href="https://tiktok.com" class="mx-2"><img src="../img/tiktok.png" alt="TikTok" class="img-fluid img-social"></a>
-                <a href="mailto:info@expo.com" class="mx-2"><img src="../img/correo.png" alt="Correo" class="img-fluid img-social"></a>
-            </section>
-            <div class="text-center">
-                <p>&copy; 2024 ExpoGame. Todos los derechos reservados.</p>
-                <p>Gracias por ser parte de nuestra comunidad gamer y tecnológica. ¡Nos vemos en el próximo evento!</p>
-            </div>
-        </div>
-    </footer>
+    
 
     
 
