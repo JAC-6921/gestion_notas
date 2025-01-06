@@ -220,13 +220,13 @@
                                                     </div>
                                                 </div>
                                      <!-- Botón Eliminar -->
-                                        <form action="../crud/Crud_Jorge/eliminar.php" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este participante?');">
+                                        <form action="../crud/eliminar.php" method="POST" onsubmit="return confirm('¿Estás seguro de que deseas eliminar este participante?');">
                                             <input type="hidden" name="participante_id" value="<?php echo $row['participante_id']; ?>">
                                             <button type="submit" class="btn btn-danger btn-sm">Eliminar</button>
                                         </form>
-                                    <!-- Botón Modificar Asistencia -->
-                                        <form action="../crud/Crud_Jorge/modificar_asistencia.php" method="POST" style="display:inline;">
-                                            <input type="hidden" name="participante_id" value="<?php echo $row['participante_id']; ?>">
+                                    <!-- Botón Modificar -->
+                                        <form action="../crud/modificar_asistencia.php" method="POST" style="display:inline;">
+                                            <input type="hidden" name="id_alumno" value="<?php echo $row['id_alumno']; ?>">
                                             <input type="hidden" name="evento_id" value="<?php echo $row['evento_id']; ?>">
                                             <input type="hidden" name="estado_actual" value="<?php echo $row['estado_asistencia']; ?>">
                                             <button type="submit" class="btn btn-info btn-sm">
